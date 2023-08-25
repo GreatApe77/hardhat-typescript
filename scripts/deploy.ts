@@ -1,15 +1,14 @@
 import hardatEnviroment from "hardhat";
 
 async function main() {
-	const simpleStorageFactory = await  hardatEnviroment.ethers.getContractFactory("SimpleStorage")
+	const CrudFactory = await  hardatEnviroment.ethers.getContractFactory("Crud")
 
-  const SimpleStorage = await simpleStorageFactory.deploy()
-  const tx = await SimpleStorage.deploymentTransaction()
+  const crud = await CrudFactory.deploy()
+  const tx = await crud.deploymentTransaction()
   console.log(`Transaction Hash: ${tx?.hash}`)
-  console.log(`SimpleStorage Address: ${await SimpleStorage.getAddress()}`)
-  await SimpleStorage.setSomeNumber(777)
-  const currentNumber  = await SimpleStorage.someNumber()
-  console.log(`Current Number is ${currentNumber}`)
+  console.log(`Crud Address: ${await crud.getAddress()}`)
+
+  
 }
 
 main();
