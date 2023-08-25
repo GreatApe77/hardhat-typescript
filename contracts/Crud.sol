@@ -14,9 +14,15 @@ contract Crud{
         uint256 timestamp;
     }
 
+    /// @notice dono do contrato
+    /// @dev carteira do dono do contrato setado no deploy
+    /// @return  owner tipo address
     address public owner;
+
     uint256 public idCounter;
+
     mapping(uint256=>Photo) public idToPhoto;
+    
     mapping(uint256=>bool) public photoExists;
 
     event PhotoCreated(string description,string imageUrl, uint256 id, uint256 timestamp);
@@ -37,7 +43,10 @@ contract Crud{
         owner = msg.sender;
     }
 
-
+    /// @notice Cria uma foto no contrato
+    /// @dev incrementa o id atual e popula um mapping de fotos
+    /// @param imageUrl Uma url de imagem
+    /// @param description Uma breve descricao da imagem
     function createPhoto(string memory imageUrl,string memory description) external onlyOwner() {
         idCounter++;
         Photo memory newPhoto;
@@ -49,14 +58,20 @@ contract Crud{
         photoExists[idCounter] = true;
         emit PhotoCreated(newPhoto.description, newPhoto.imageUrl, newPhoto.id, newPhoto.timestamp);
     }
-
+    /// @notice atualiza uma foto
+    /// @dev atualiza um id existente
+    /// @param imageUrl uma nova URL de imagem
+    /// @param description uma breve descricao
+    /// @param id o id da foto a ser atualizada
     function updatePhoto(uint256 id,string memory imageUrl,string memory description) external onlyOwner() onlyExistentPhoto(id){
         
         idToPhoto[id].imageUrl = imageUrl;
         idToPhoto[id].description = description;
         emit PhotoUpdated(description, imageUrl);
     }
-
+    /// @notice deleta uma foto
+    /// @dev deleta uma foto existente por um ID
+    /// @param id o id da foto a ser deletada
     function deletePhoto(uint256 id)external onlyExistentPhoto(id) onlyOwner(){
         idToPhoto[id].imageUrl = "";
         idToPhoto[id].description = "";
@@ -66,6 +81,10 @@ contract Crud{
         emit PhotoDeleted(id);
     }
 
+
+    /// @notice realiza uma leitura das fotos
+    /// @dev retorna todas as fotos registradas no contrato
+    /// @return Photo[] um array do tipo Photo
     function getAllPhotos() external view returns(Photo[] memory){
         Photo[] memory allPhotos = new Photo[](idCounter);
         
