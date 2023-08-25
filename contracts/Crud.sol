@@ -19,6 +19,10 @@ contract Crud{
     mapping(uint256=>Photo) public idToPhoto;
     mapping(uint256=>bool) public photoExists;
 
+    event PhotoCreated(string description,string imageUrl, uint256 id, uint256 timestamp);
+    event PhotoUpdated(string description,string imageUrl);
+    event PhotoDeleted(uint256 id);
+
     modifier onlyOwner(){
         require(msg.sender==owner);
         _;
@@ -43,13 +47,14 @@ contract Crud{
         newPhoto.timestamp = block.timestamp;
         idToPhoto[idCounter] = newPhoto;
         photoExists[idCounter] = true;
+        emit PhotoCreated(newPhoto.description, newPhoto.imageUrl, newPhoto.id, newPhoto.timestamp);
     }
 
     function updatePhoto(uint256 id,string memory imageUrl,string memory description) external onlyOwner() onlyExistentPhoto(id){
         
         idToPhoto[id].imageUrl = imageUrl;
         idToPhoto[id].description = description;
-
+        emit PhotoUpdated(description, imageUrl);
     }
 
     function deletePhoto(uint256 id)external onlyExistentPhoto(id) onlyOwner(){
@@ -58,6 +63,7 @@ contract Crud{
         idToPhoto[id].id = 0;
         idToPhoto[id].timestamp = 0;
         photoExists[id] =false;
+        emit PhotoDeleted(id);
     }
 
     function getAllPhotos() external view returns(Photo[] memory){
