@@ -4,7 +4,7 @@ pragma solidity ^0.8.2;
 
 /// @title A Crud Smart Contract
 /// @author Mateus Navarro
-/// @notice create remove(not delete) update and retrieve Photos
+/// @notice create remove(not delete) update and retrieve Photos (versao modificada do contrato original deployado em julho 2023)
 
 contract Crud{
     struct Photo{
