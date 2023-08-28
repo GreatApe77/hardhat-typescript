@@ -2,7 +2,7 @@ import "mocha";
 import {assert} from "chai";
 import hardhatEnv from "hardhat";
 import { Crud } from "../typechain-types";
-
+//se esse arquivo estiver dando erro de tipagem execute o comando 'npx hardhat typechain no terminal'
 describe("Testing Create Photo Function in Crud", () => {
 	let crudContract:Crud;
     const imageUrl = "https://some-image.jpeg";
